@@ -301,46 +301,6 @@ body.menu-unfolded #show-menu .notification-icon {
 	border-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.3);
 }
 
-.permissions-controls {
-	margin: 1em 0;
-	-webkit-box-shadow: 0px 0px 0px 1px #AAA;
-	box-shadow: 0px 0px 0px 1px #AAA;
-}
-.permissions-controls > div {
-	border: none;
-	border-right: 1px solid #CCC;
-	border-bottom: 1px solid #222;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	vertical-align: bottom;
-}
-/* 2 buttons */
-.permissions-controls.noOfButtons2 > div {
-	width: 50%;
-}
-/* 3 buttons */
-.permissions-controls.noOfButtons3 > div {
-	width: 33%;
-}
-.permissions-controls.noOfButtons3 > div + div {
-	width: 34%;
-}
-.permissions-controls.noOfButtons3 > div + div + div {
-	width: 33%;
-	border-right: none;
-}
-/* 4 buttons */
-.permissions-controls.noOfButtons4 > div {
-	width: 25%;
-}
-
-.allow.selected {color: #fff; border-bottom: 4px solid #0f0; background: #111;}
-.allow {color: #040; background: #eee;}
-.prompt.selected {color: #fff; border-bottom: 4px solid #ff0; background: #111;}
-.prompt {color: #440; background: #eee;}
-.deny.selected {color: #fff; border-bottom: 4px solid #f00; background: #111;}
-.deny {color: #400; background: #eee;}
-
 .info {
 	background: #fff;
 	color: #000;
