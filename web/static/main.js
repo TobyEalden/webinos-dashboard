@@ -414,71 +414,75 @@ function SwipeableTabs(elId, containerId) {
 	this.container = document.getElementById(containerId);
 	this.tabs = document.getElementById(elId);
 
-	this.container_width = 0;
-	this.tab_width = 0;
-	this.scroll_limit = 0;
-	this.current_pos = 0;
+    this.container_width = 0;
+    this.tab_width = 0;
+    this.scroll_limit = 0;
+    this.current_pos = 0;
 
-	this.init = function() {
-		this.initNeeded = true;
-		this.setDimensions();
+    this.init = function() {
+      if (this.container && this.tabs) {
+        this.initNeeded = true;
+        this.setDimensions();
 
-		window.addEventListener("orientationchange", function() { this.initNeeded = true; }, false);
-		window.addEventListener("resize", function() { this.initNeeded = true; }, false);
-	};
+        window.addEventListener("orientationchange", function() { this.initNeeded = true; }, false);
+        window.addEventListener("resize", function() { this.initNeeded = true; }, false);
+      }
+    };
 
-	this.setDimensions = function() {
-		if(this.initNeeded) {
-			this.container_width = this.container.offsetWidth;
-			this.tab_width = this.tabs.offsetWidth;
-			//check old limit here and adjust pos?
-			this.scroll_limit = this.container_width - this.tab_width;
-			this.reinitNeeded = false;
-		}
-	};
+    this.setDimensions = function() {
+      if(this.initNeeded) {
+        this.container_width = this.container.offsetWidth;
+        this.tab_width = this.tabs.offsetWidth;
+        //check old limit here and adjust pos?
+        this.scroll_limit = this.container_width - this.tab_width;
+        this.reinitNeeded = false;
+      }
+    };
 
-	this.setContainerOffset = function(move, animate) {
-		//container.removeClass("animate");
+    this.setContainerOffset = function(move, animate) {
+      //container.removeClass("animate");
 
-		//if(animate) {
-		//	container.addClass("animate");
-		//}
-		var newPos = this.current_pos + move;
-		if(newPos > 0) {
-			newPos = 0;
-		} else if(newPos < this.scroll_limit) {
-			newPos = this.scroll_limit;
-		}
+      //if(animate) {
+      //	container.addClass("animate");
+      //}
+      var newPos = this.current_pos + move;
+      if(newPos > 0) {
+        newPos = 0;
+      } else if(newPos < this.scroll_limit) {
+        newPos = this.scroll_limit;
+      }
 
-		if(transformPrefixed) { //this is set outside this object somewhere above
-			this.tabs.style[transformPrefixed] = "translate3d("+ newPos +"px,0,0)";
-		} else {
-			var px = ((pane_width*pane_count) / 100) * percent; //TODO
-			container.css("left", px+"px");
-		}
+      if(transformPrefixed) { //this is set outside this object somewhere above
+        this.tabs.style[transformPrefixed] = "translate3d("+ newPos +"px,0,0)";
+      } else {
+        var px = ((pane_width*pane_count) / 100) * percent; //TODO
+        container.css("left", px+"px");
+      }
 
-		this.current_pos = newPos;
-	}
+      this.current_pos = newPos;
+    }
 
-	function handleHammer(ev) {
-		//console.log(ev);
-		// disable browser scrolling
-		ev.gesture.preventDefault();
+    function handleHammer(ev) {
+      //console.log(ev);
+      // disable browser scrolling
+      ev.gesture.preventDefault();
 
-		switch(ev.type) {
-			case 'touch':
-				that.setDimensions();
-				that.oldDeltaX = 0;
-				window.skipNextClick = null; //TODO
-				break;
-			case 'dragright':
-			case 'dragleft':
-				that.setContainerOffset(ev.gesture.deltaX - that.oldDeltaX);
-				that.oldDeltaX = ev.gesture.deltaX;
-				window.skipNextClick = ev.target; //TODO
-				break;
-		}
-	}
+      switch(ev.type) {
+        case 'touch':
+          that.setDimensions();
+          that.oldDeltaX = 0;
+          window.skipNextClick = null; //TODO
+          break;
+        case 'dragright':
+        case 'dragleft':
+          that.setContainerOffset(ev.gesture.deltaX - that.oldDeltaX);
+          that.oldDeltaX = ev.gesture.deltaX;
+          window.skipNextClick = ev.target; //TODO
+          break;
+      }
+    }
 
-	Hammer(this.tabs, { drag_lock_to_axis: true }).on("touch dragleft dragright", handleHammer);
+  if (this.container && this.tabs) {
+    Hammer(this.tabs, { drag_lock_to_axis: true }).on("touch dragleft dragright", handleHammer);
+  }
 }
