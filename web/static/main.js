@@ -23,6 +23,10 @@ if ( document.addEventListener ) {
 var domObjs = {}; //a place to gather frequently used dom objects (+ onclick active class, and so on)
 
 function domReady () {
+	transformPrefixed = GetVendorPrefix(["transform", "msTransform", "MozTransform", "WebkitTransform", "OTransform"]);
+
+	enablePopups();
+
 	//header menu buttons + overlay
 	document.getElementById('show-menu').onclick = function(){toggleMenu('menu')};
 	document.getElementById('show-actions').onclick = function(){toggleMenu('actions')};
@@ -113,7 +117,7 @@ function GetVendorPrefix(arrayOfPrefixes) {
 
 	return null;
 }
-var transformPrefixed = GetVendorPrefix(["transform", "msTransform", "MozTransform", "WebkitTransform", "OTransform"]);
+var transformPrefixed;
 
 function showPopup(popup) {
 	domObjs.popupOverlay.style.top = document.body.scrollTop+'px'; //center
@@ -318,7 +322,7 @@ var enablePopups = function() {
 	domObjs.popupDeleteProfile = document.getElementById('popup-deleteProfile');
 
 	//buttons opening popups
-	document.getElementById('t-test').onclick = function() {showPopup(domObjs.popupTest)};
+	//document.getElementById('t-test').onclick = function() {showPopup(domObjs.popupTest)};
 		//document.getElementById('t-add').onclick = function() {showPopup(domObjs.popupAddToPolicy)};
 
 	domObjs.popupAddProfileId = document.getElementById('popup-addProfile-id');
@@ -363,7 +367,7 @@ var enablePopups = function() {
 	}
 	/* policy entity edit tabs END */
 
-}();
+};
 
 /*var toolbarShowHide = function() {
 	domObjs.toolbar = document.getElementById('toolbar');
