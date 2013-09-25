@@ -171,31 +171,34 @@ function showPage(linkId, type) {
 }
 
 function enableMenuAndInitFirstPage(id, type) {
-	var clickables = document.getElementById(id).children;
+  var el = document.getElementById(id);
+  if (el) {
+    var clickables = el.children;
 
-	var i = 0,
-	j = clickables.length;
+    var i = 0,
+    j = clickables.length;
 
-	for(i;i<j;i++) {
-		clickables[i].onclick = (function(elements, clickedEl, type) {
-			return function() {
-				console.log(this);
-				if(window.skipNextClick == this) { //TODO
-					window.skipNextClick = null;
-					return;
-				}
-				selectItem(elements, clickedEl);
-				showPage(this.id, type);
-				hideMenu();
-			};
-		})(clickables, i, type);
+    for(i;i<j;i++) {
+      clickables[i].onclick = (function(elements, clickedEl, type) {
+        return function() {
+          console.log(this);
+          if(window.skipNextClick == this) { //TODO
+            window.skipNextClick = null;
+            return;
+          }
+          selectItem(elements, clickedEl);
+          showPage(this.id, type);
+          hideMenu();
+        };
+      })(clickables, i, type);
 
-		if(clickables[i].className == "selected") { //init
-			domObjs.pages = domObjs.pages || {};
-			domObjs.pages[type] = {};
-			showPage(clickables[i].id, type);
-		}
-	}
+      if(clickables[i].className == "selected") { //init
+        domObjs.pages = domObjs.pages || {};
+        domObjs.pages[type] = {};
+        showPage(clickables[i].id, type);
+      }
+    }
+  }
 };
 
 function drawPermissionButtons(container, buttons, active) {
@@ -308,65 +311,68 @@ function formatAMPM(date) {
 
 
 var enablePopups = function() {
-	//init
-	domObjs.popupOverlay = document.getElementById('popup_overlay');
-	domObjs.popupContainer = document.getElementById('popup_container');
+  try {
+    	//init
+    domObjs.popupOverlay = document.getElementById('popup_overlay');
+    domObjs.popupContainer = document.getElementById('popup_container');
 
-	//popups
-	domObjs.popupTest = document.getElementById('popup-test');
-		//domObjs.popupAddToPolicy = document.getElementById('popup-addToPolicy');
-		//domObjs.popupPolicyEntity = document.getElementById('popup-policyEntity');
-	domObjs.popupAddPermission = document.getElementById('popup-addPermission');
-	domObjs.popupAddProfile = document.getElementById('popup-addProfile');
-	domObjs.popupDeletePermission = document.getElementById('popup-deletePermission');
-	domObjs.popupDeleteProfile = document.getElementById('popup-deleteProfile');
+    //popups
+    domObjs.popupTest = document.getElementById('popup-test');
+      //domObjs.popupAddToPolicy = document.getElementById('popup-addToPolicy');
+      //domObjs.popupPolicyEntity = document.getElementById('popup-policyEntity');
+    domObjs.popupAddPermission = document.getElementById('popup-addPermission');
+    domObjs.popupAddProfile = document.getElementById('popup-addProfile');
+    domObjs.popupDeletePermission = document.getElementById('popup-deletePermission');
+    domObjs.popupDeleteProfile = document.getElementById('popup-deleteProfile');
 
-	//buttons opening popups
-	//document.getElementById('t-test').onclick = function() {showPopup(domObjs.popupTest)};
-		//document.getElementById('t-add').onclick = function() {showPopup(domObjs.popupAddToPolicy)};
+    //buttons opening popups
+    document.getElementById('t-test').onclick = function() {showPopup(domObjs.popupTest)};
+      //document.getElementById('t-add').onclick = function() {showPopup(domObjs.popupAddToPolicy)};
 
-	domObjs.popupAddProfileId = document.getElementById('popup-addProfile-id');
-	domObjs.popupAddProfileName = document.getElementById('popup-addProfile-name');
-	document.getElementById('placesAddProfile').onclick = function() {profileEditPopup()};
+    domObjs.popupAddProfileId = document.getElementById('popup-addProfile-id');
+    domObjs.popupAddProfileName = document.getElementById('popup-addProfile-name');
+    document.getElementById('placesAddProfile').onclick = function() {profileEditPopup()};
 
-	domObjs.popupAddPermissionId = document.getElementById('popup-addPermission-id');
-	domObjs.popupAddPermissionName = document.getElementById('popup-addPermission-name');
-	domObjs.popupAddPermissionApp = document.getElementById('popup-addPermission-app');
-	domObjs.popupAddPermissionType = document.getElementById('popup-addPermission-type');
-	domObjs.popupAddPermissionAction = document.getElementById('popup-addPermission-action');
-	document.getElementById('placesAddAllow').onclick = function() {permissionEditPopup('allow')};
-	document.getElementById('placesAddPrompt').onclick = function() {permissionEditPopup('prompt')};
-	document.getElementById('placesAddDeny').onclick = function() {permissionEditPopup('deny')};
-	document.getElementById('popup-deletePermission-confirm').onclick = function() {placesDeletePermission()};
-	document.getElementById('popup-deleteProfile-confirm').onclick = function() {placesDeleteProfile()};
+    domObjs.popupAddPermissionId = document.getElementById('popup-addPermission-id');
+    domObjs.popupAddPermissionName = document.getElementById('popup-addPermission-name');
+    domObjs.popupAddPermissionApp = document.getElementById('popup-addPermission-app');
+    domObjs.popupAddPermissionType = document.getElementById('popup-addPermission-type');
+    domObjs.popupAddPermissionAction = document.getElementById('popup-addPermission-action');
+    document.getElementById('placesAddAllow').onclick = function() {permissionEditPopup('allow')};
+    document.getElementById('placesAddPrompt').onclick = function() {permissionEditPopup('prompt')};
+    document.getElementById('placesAddDeny').onclick = function() {permissionEditPopup('deny')};
+    document.getElementById('popup-deletePermission-confirm').onclick = function() {placesDeletePermission()};
+    document.getElementById('popup-deleteProfile-confirm').onclick = function() {placesDeleteProfile()};
 
-	//buttons inside popups
-	document.getElementById('popup-addProfile-save').onclick = function() {placesAddEditProfile()};
-	document.getElementById('popup-addPermission-save').onclick = function() {placesAddEditPermission()};
+    //buttons inside popups
+    document.getElementById('popup-addProfile-save').onclick = function() {placesAddEditProfile()};
+    document.getElementById('popup-addPermission-save').onclick = function() {placesAddEditPermission()};
 
-		//document.getElementById('popup-addToPolicy-profile').onclick = function() {policyEntityNewdit('profile')};
-		//document.getElementById('popup-addToPolicy-object').onclick = function() {policyEntityNewdit('object')};
-		//document.getElementById('popup-addToPolicy-service').onclick = function() {policyEntityNewdit('service')};
+      //document.getElementById('popup-addToPolicy-profile').onclick = function() {policyEntityNewdit('profile')};
+      //document.getElementById('popup-addToPolicy-object').onclick = function() {policyEntityNewdit('object')};
+      //document.getElementById('popup-addToPolicy-service').onclick = function() {policyEntityNewdit('service')};
 
-	/* policy entity edit tabs - quite verbose... but it seems like I don't need a function for anything similar to this */
-	var popupAddPermissionSummaryTab = document.getElementById('popup-addPermission-summary-tab');
-	var popupAddPermissionDetailsTab = document.getElementById('popup-addPermission-details-tab');
-	var popupAddPermissionTabs = [popupAddPermissionSummaryTab, popupAddPermissionDetailsTab];
-	domObjs.popupAddPermissionSummaryPage = document.getElementById('popup-addPermission-summary-content');
-	domObjs.popupAddPermissionDetailsPage = document.getElementById('popup-addPermission-details-content');
+    /* policy entity edit tabs - quite verbose... but it seems like I don't need a function for anything similar to this */
+    var popupAddPermissionSummaryTab = document.getElementById('popup-addPermission-summary-tab');
+    var popupAddPermissionDetailsTab = document.getElementById('popup-addPermission-details-tab');
+    var popupAddPermissionTabs = [popupAddPermissionSummaryTab, popupAddPermissionDetailsTab];
+    domObjs.popupAddPermissionSummaryPage = document.getElementById('popup-addPermission-summary-content');
+    domObjs.popupAddPermissionDetailsPage = document.getElementById('popup-addPermission-details-content');
 
-	popupAddPermissionSummaryTab.onclick = function() {
-		selectItem(popupAddPermissionTabs, 0);
-		domObjs.popupAddPermissionSummaryPage.style.display = 'block';
-		domObjs.popupAddPermissionDetailsPage.style.display = 'none';
-	}
-	popupAddPermissionDetailsTab.onclick = function() {
-		selectItem(popupAddPermissionTabs, 1);
-		domObjs.popupAddPermissionSummaryPage.style.display = 'none';
-		domObjs.popupAddPermissionDetailsPage.style.display = 'block';
-	}
-	/* policy entity edit tabs END */
-
+    popupAddPermissionSummaryTab.onclick = function() {
+      selectItem(popupAddPermissionTabs, 0);
+      domObjs.popupAddPermissionSummaryPage.style.display = 'block';
+      domObjs.popupAddPermissionDetailsPage.style.display = 'none';
+    }
+    popupAddPermissionDetailsTab.onclick = function() {
+      selectItem(popupAddPermissionTabs, 1);
+      domObjs.popupAddPermissionSummaryPage.style.display = 'none';
+      domObjs.popupAddPermissionDetailsPage.style.display = 'block';
+    }
+  	/* policy entity edit tabs END */
+  } catch (e) {
+    console.log("error during enable popups: " + e.message);
+  }
 };
 
 /*var toolbarShowHide = function() {
